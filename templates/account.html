@@ -1,0 +1,43 @@
+{% extends 'blank-layout.html'%}
+{% load static %}
+
+{% block banner %}
+<div class="account-section" style="background: none;">
+    <div class="container">
+        <div class="row">
+            <div class="col-2">
+
+                <img src="{% static 'images/image1.png' %}" alt="">
+            </div>
+            <div class="col-2">
+                <div class="form-container">
+                    <div class="log-section">
+                        <h4 id="login" onclick="loginfunc()">Login</h4>
+                        <h4 id="reguster" onclick="regfunc()">Register</h4>
+                    </div>
+                    <span class="line"></span>
+                    <form class="login-form" action="">
+                        <input type="text" placeholder="username">
+                        <input type="text" name="" id="" placeholder="password">
+                        <a href=""><button class="submitbtn">Login -</button></a>
+                        <a href="" class="forgotte">Forgott password</a>
+                    </form>
+                    <form action="" class="register-form">
+                        <input type="text" placeholder="username">
+                        <input type="text" placeholder="Email">
+                        <input type="password" placeholder="password">
+                        <a href=""><button class="submitbtn">Login -</button></a>
+                    </form>
+                    
+                    
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock banner %}
+
+{% block content %}
+
+{% endblock content %}

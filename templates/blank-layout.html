@@ -1,0 +1,219 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200&family=Didact+Gothic&family=Frank+Ruhl+Libre&family=Kanit:wght@100&family=Maven+Pro&family=Noto+Sans+JP:wght@100&family=Open+Sans:wght@300&family=Oswald:wght@200&family=Poppins:wght@100;200;400;700&family=Roboto+Mono:wght@100&family=Teko:wght@500&family=Tilt+Prism&family=Ysabeau+SC:wght@1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            {% include 'menu.html' %}
+    
+            {% block banner %}
+            {% include 'banner-layout.html' %}
+            {% endblock banner %}
+    
+        </div>
+        
+    </div>
+
+    {% block content %}
+    <!--  catogory part -->
+
+
+
+    <!-- offer -->
+    <!-- <div class="add">
+        <div class="second-container">
+            <div class="row">
+                <div class="col-2">
+                    <img src="{% static 'images/exclusive.png' %}" alt="">
+                </div>
+                <div class="col-2">
+                    <p>
+                        Exclusively Available on RedStore</p>
+                    <h1>Smart Band 4</h1>
+                    <small>The Mi Smart Band 4 fearures a 39.9%larger (than Mi Band 3) AMOLED color full-touch display with adjustable brightness, so everything is clear as can be</small>
+
+                    <a href=""><button>Buy Now -</button></a>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+    <!-- testimonial -->
+    <!-- <div class="testimonial">
+        <div class="second-container">
+            <div class="row">
+                <div class="col-3">
+                    <i class="fa fa-quote-left"></i>
+                    <p>Lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been industry's standard dummy text.</p>
+                    <div class="rating">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                    </div>
+
+                    <img src="{% static 'images/user-1.png' %}" alt="">
+
+                    <h3>Sean Parker</h3>
+                </div>
+                <div class="col-3">
+                    <i class="fa fa-quote-left"></i>
+                    <p>Lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been industry's standard dummy text.</p>
+                    <div class="rating">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                    </div>
+
+                    <img src="{% static 'images/user-2.png' %}" alt="">
+
+                    <h3>Mike Smith</h3>
+                </div>
+                <div class="col-3">
+                    <i class="fa fa-quote-left"></i>
+                    <p>Lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been industry's standard dummy text.</p>
+                    <div class="rating">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                    </div>
+
+                    <img src="{% static 'images/user-3.png' %}" alt="">
+
+                    <h3>Mabel Joe</h3>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+<!-- brand -->
+    <!-- <div class="brand">
+        <div class="second-container">
+            <div class="row">
+                <div class="col-5">
+                    <img src="{% static 'images/logo-godrej.png' %}" alt="">
+                </div>
+                <div class="col-5">
+                    <img src="{% static 'images/logo-coca-cola.png' %}" alt="">
+                </div>
+                <div class="col-5">
+                    <img src="{% static 'images/logo-oppo.png' %}" alt="">
+                </div>
+                <div class="col-5">
+                    <img src="{% static 'images/logo-philips.png' %}" alt="">
+                </div>
+                <div class="col-5">
+                    <img src="{% static 'images/logo-paypal.png' %}" alt="">
+                </div>
+            </div>
+        </div>
+    </div> -->
+    {% endblock content %}
+    <!-- footer -->
+    <div class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="footer-1-col-1">
+                    <h4>Download Our App</h4>
+                    <p>Download App for Android and ios mobile phone.</p>
+                    <div class="app-logo">
+                        <img src="{% static 'images/play-store.png' %}" alt="">
+                        <img src="{% static 'images/app-store.png' %}" alt="">
+                    </div>
+                </div>
+                <div class="footer-2-col-2">
+                    <img src="{% static 'images/logo-white.png' %}" alt="">
+                    <p>pOur Purpose Is To Sustainably Make the Pleasure and Benefits of Sports Accessible to the Many.</p>
+                </div>
+                <div class="footer-3-col-3">
+                    <h4>Useful Links</h4>
+                    <ul>
+                        <li>Coupons</li>
+                        <li>Blog Post</li>
+                        <li>Return Policy</li>
+                        <li>Join Affiliate</li>
+                    </ul>
+                </div>
+                <div class="footer-4-col-4">
+                    <h4>Follow Us</h4>
+                    <ul>
+                        <li>Facebook</li>
+                        <li>Twitter</li>
+                        <li>Instagram</li>
+                        <li>Youtube</li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <p>Copyright 2020 - Samwit Adhikary</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        let logform = document.querySelector('.login-form');
+        let regform = document.querySelector('.register-form');
+        let line = document.querySelector('.line');
+
+
+        function regfunc() {
+            // logform.classList.add('changelog');
+            logform.style.transform = "translatex(0px)";
+            logform.style.transform = "translatex(-300px)";
+            regform.style.transform = "translateX(-300px)";
+            line.style.transform = "translatex(150px)";
+
+        }
+
+        function loginfunc() {
+            regform.style.transform = "translateX(300px)";
+            logform.style.transform = "translatex(0px)";
+            line.style.transform = "translatex(0px)";
+        }
+
+        var menu = document.getElementById('menuitem');
+        function menutoogle() {
+            if (menu.classList.contains('menuactive')) {
+                menu.classList.remove('menuactive');
+                menu.classList.add('change')
+                
+            }
+            else{
+                menu.classList.add('menuactive');
+            }
+        }
+
+        var image_main = document.getElementById('pickme');
+        document.querySelectorAll('.prev-img').forEach((img) => {
+            img.addEventListener('click', () => {
+                image_main.src = img.src;
+            })
+        })
+
+        
+    </script>
+    </script>
+</body>
+</html>
