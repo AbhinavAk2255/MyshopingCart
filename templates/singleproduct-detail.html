@@ -3,9 +3,9 @@
 <div class="second-container single-product-detail">
     <div class="row">
         <div class="col-2">
-            <img src="{% static 'images/gallery-1.jpg' %}" alt="" width="100%" id="pickme">
+            <img src="{{detail.image.url}}" alt="" width="100%" id="pickme">
 
-            <div class="image-preview">
+            <!-- <div class="image-preview">
 
                 <div class="prev-img-col">
                     <img class="prev-img" src="{% static 'images/gallery-1.jpg' %}" alt="" width="100%">
@@ -20,12 +20,12 @@
                     <img class="prev-img" src="{% static 'images/gallery-4.jpg' %}" alt="" width="100%">
                 </div>
     
-            </div>
+            </div> -->
         </div>
 
         <div class="col-2">
             <p>Home / T-Shirt</p>
-            <h1>Red Printed T-Shirt by HRX</h1>
+            <h1>{{ detail.title }}</h1>
             <h4>$50.00</h4>
             <select class="size-selection" name="" id="">
                 <option value="">Select Size</option>
@@ -37,10 +37,11 @@
             </select>
             <input class="Quantity-product" type="number" value="1">
             <a href=""><button class="btn">Add To Cart</button></a>
-            <h3>Product Details prev-img
+            <h3>Product Details <i class="fa fa-indent"></i> </h3>
             <br>
-            <p>Give your summer wardrobe a style upgrade with the HRX Men's Active T-Shirt. Team it with a pair of shorts for your morning workout or a denims for an evening out with the guys.</p>
+            <p>{{detail.description}}</p>
         </div>
+        
     </div>
 
     <div class="second-container">
