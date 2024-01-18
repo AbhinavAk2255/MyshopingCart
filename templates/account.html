@@ -1,4 +1,5 @@
 {% extends 'blank-layout.html'%}
+
 {% load static %}
 
 {% block banner %}
@@ -16,28 +17,77 @@
                         <h4 id="reguster" onclick="regfunc()">Register</h4>
                     </div>
                     <span class="line"></span>
-                    <form class="login-form" action="">
-                        <input type="text" placeholder="username">
-                        <input type="text" name="" id="" placeholder="password">
-                        <a href=""><button class="submitbtn">Login -</button></a>
+                    <form class="login-form" method="POST">
+                        {% csrf_token %}
+                        <input type="text" required name="username" placeholder="username">
+                        <input type="password" required name="password" id="" placeholder="password">
+                        <button type="submit" name="login" class="submitbtn">Login -</button>
                         <a href="" class="forgotte">Forgott password</a>
                     </form>
-                    <form action="" class="register-form">
-                        <input type="text" placeholder="username">
-                        <input type="text" placeholder="Email">
-                        <input type="password" placeholder="password">
-                        <a href=""><button class="submitbtn">Login -</button></a>
-                    </form>
-                    
-                    
-                </div>
 
+                    <form  class="register-form" method="POST">
+                        {% csrf_token %}
+                        <input type="text" required maxlength="10" name="username" placeholder="Username">
+                        <input type="text" required name="email" placeholder="Email">
+                        <input type="password" required name="password" maxlength="10" placeholder="Password">
+                        <input type="text" required name="address" placeholder="Address">
+                        <input type="text" required name="phone" maxlength="10" placeholder="Phone" onkeydown="
+                        event.key
+                        if (event.key == 'Enter') {
+                            
+                        }
+                        ">
+                        <button type="submit" class="submitbtn" name="register" >Register</button>
+                    </form>
+                </div>
+                {% if messages %}
+                <div class="message_container">
+                    {% for message in messages %}
+                    <li style="font-size: 10px;" class="{{message.tags}}">{{message}}</li>
+                    {% endfor %}
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>
 </div>
+
 {% endblock banner %}
 
-{% block content %}
 
+{% block content %}
+{% block script-sec %}
+<script>
+    let logform = document.querySelector('.login-form');
+    let regform = document.querySelector('.register-form');
+    let line = document.querySelector('.line');
+
+
+    function regfunc() {
+        // logform.classList.add('changelog');
+        logform.style.transform = "translatex(0px)";
+        logform.style.transform = "translatex(-300px)";
+        regform.style.transform = "translateX(-300px)";
+        line.style.transform = "translatex(150px)";
+
+    }
+
+    function loginfunc() {
+        regform.style.transform = "translateX(300px)";
+        logform.style.transform = "translatex(0px)";
+        line.style.transform = "translatex(0px)";
+    }
+</script>
+{% if register %}
+    <script>
+        regfunc()
+    </script>
+    {% else  %}
+    <script>
+        loginfunc()
+    </script>
+{% endif %}
+
+{% endblock script-sec %}
 {% endblock content %}
+

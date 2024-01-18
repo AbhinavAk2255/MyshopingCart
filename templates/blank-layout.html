@@ -171,27 +171,10 @@
         </div>
     </div>
 
+
     <script>
 
-        let logform = document.querySelector('.login-form');
-        let regform = document.querySelector('.register-form');
-        let line = document.querySelector('.line');
 
-
-        function regfunc() {
-            // logform.classList.add('changelog');
-            logform.style.transform = "translatex(0px)";
-            logform.style.transform = "translatex(-300px)";
-            regform.style.transform = "translateX(-300px)";
-            line.style.transform = "translatex(150px)";
-
-        }
-
-        function loginfunc() {
-            regform.style.transform = "translateX(300px)";
-            logform.style.transform = "translatex(0px)";
-            line.style.transform = "translatex(0px)";
-        }
 
         var menu = document.getElementById('menuitem');
         function menutoogle() {
@@ -212,8 +195,9 @@
             })
         })
 
-        
     </script>
-    </script>
+
+    {% block script-sec %}
+    {% endblock script-sec %}
 </body>
 </html>
