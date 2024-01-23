@@ -17,7 +17,7 @@
                         <h4 id="reguster" onclick="regfunc()">Register</h4>
                     </div>
                     <span class="line"></span>
-                    <form class="login-form" method="POST">
+                    <form class="login-form" method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
                         <input type="text" required name="username" placeholder="username">
                         <input type="password" required name="password" id="" placeholder="password">
@@ -25,7 +25,7 @@
                         <a href="" class="forgotte">Forgott password</a>
                     </form>
 
-                    <form  class="register-form" method="POST">
+                    <form  class="register-form" method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
                         <input type="text" required maxlength="10" name="username" placeholder="Username">
                         <input type="text" required name="email" placeholder="Email">

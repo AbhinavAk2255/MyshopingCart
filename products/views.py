@@ -24,6 +24,6 @@ def products_list(request):
 
 def products_details(request,pk):
     detailes = product.objects.get(pk=pk)
-    print(detailes)
+    print(detailes.id)
     detail_product = {'detail':detailes}
     return render(request,'product_detail.html',detail_product)
