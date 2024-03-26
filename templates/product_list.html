@@ -3,20 +3,17 @@
 <div class="second-container">  
     <div class="top-area row-2">
         <div>
-            <h2>All Products</h2>
+            <h2 class="title-category" style="color: #ff523b;">All Products</h2>
         </div>
         <div>
-            <select class="sorting" name="" id="">
-                <option value="">Default sort</option>
-                <option value="">sort by price</option>
-                <option value="">sort by popularity</option>
-                <option value="">sort by rating</option>
-                <option value="">sort by sale</option>
-            </select>
+            <a href="{% url 'products_category_filtered' 'men' %}"><button class="category-btn" value="Men">Men</button></a> 
+            <a href="{% url 'products_category_filtered' 'women' %}"><button class="category-btn" value="Women">Women</button></a> 
+            <a href="{% url 'products_category_filtered' 'kid' %}"><button class="category-btn" value="Kid">Kid</button></a>
         </div>
     </div>
 
-    {% for item in products|chunks:4 %}
+    
+    {% for item in allproducts|chunks:4 %}
     <div class="row">
         {% for pro_item in item %}
         <div class="col-4">
@@ -30,22 +27,35 @@
                 <i class="fa fa-star-o"></i>
             </div>
             <h4>{{pro_item.price}}</h4>
+            <h4 style="text-decoration: line-through;">99.00</h4>
         </div>
         {% endfor %}
     </div>
     {% endfor %}
-
     <div class="next-page">
-        {% if products.has_previous %}
+        {% if allproducts.has_previous %}
         <a href="?page={{products.previous_page_number}}"><span><<</span></a>
         {% endif %}
-        {% for i in products.paginator.page_range %}
+        {% for i in allproducts.paginator.page_range %}
         <a href="?page={{i}}"><span>{{i}}</span></a>
         {% endfor %}
 
-        {% if products.has_next %}
+        {% if allproducts.has_next %}
         <a href="?page={{products.next_page_number}}"><span>>></span></a>
         {% endif %}
     </div>
-    
+   
 </div>
+
+   
+<!-- <script>
+    document.querySelectorAll('.category-btn').forEach((item) => {
+        item.addEventListener('click', (event) => {
+            event.preventDefault();
+            let category = item.value; // Declare category using let or const
+            console.log(category);
+            let title = document.querySelector('.title-category'); // Move the title selection inside the event listener
+            title.textContent = category;
+        })
+    })
+</script> -->
