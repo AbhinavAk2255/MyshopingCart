@@ -1,0 +1,172 @@
+{% extends 'admin/admin_base.html' %}
+{% load static %}
+
+{% block title %}Dashboard — ShopKart Admin{% endblock %}
+{% block breadcrumb %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="adm-page-head">
+    <div>
+        <h1>Dashboard</h1>
+        <p>Welcome back, <strong>{{ request.user.username }}</strong>. Here's what's happening in your store today.</p>
+    </div>
+    <a href="{% url 'admin_add_product' %}" class="adm-btn adm-btn-primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
+        Add Product
+    </a>
+</div>
+
+<!-- ===== KPI CARDS ===== -->
+<div class="adm-kpi-grid">
+    <div class="adm-kpi-card">
+        <div class="adm-kpi-icon adm-kpi-blue">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+        </div>
+        <div class="adm-kpi-body">
+            <span>Total Products</span>
+            <strong>{{ total_products }}</strong>
+        </div>
+    </div>
+    <div class="adm-kpi-card">
+        <div class="adm-kpi-icon adm-kpi-violet">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="adm-kpi-body">
+            <span>Customers</span>
+            <strong>{{ total_customers }}</strong>
+        </div>
+    </div>
+    <div class="adm-kpi-card">
+        <div class="adm-kpi-icon adm-kpi-amber">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect width="8" height="4" x="8" y="2" rx="1"/></svg>
+        </div>
+        <div class="adm-kpi-body">
+            <span>Total Orders</span>
+            <strong>{{ total_orders }}</strong>
+        </div>
+    </div>
+    <div class="adm-kpi-card adm-kpi-card-accent">
+        <div class="adm-kpi-icon adm-kpi-green">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 3h12M6 8h12M6 3a5.5 5.5 0 0 1 0 11H6M6 9h7.5M11.5 14l6 7" />
+            </svg>
+        </div>
+        <div class="adm-kpi-body">
+            <span>Revenue</span>
+            <strong>₹{{ total_revenue|floatformat:2 }}</strong>
+        </div>
+    </div>
+    <div class="adm-kpi-card">
+        <div class="adm-kpi-icon adm-kpi-red">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+        </div>
+        <div class="adm-kpi-body">
+            <span>Pending Orders</span>
+            <strong>{{ pending_orders }}</strong>
+        </div>
+    </div>
+    <div class="adm-kpi-card">
+        <div class="adm-kpi-icon adm-kpi-teal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
+        <div class="adm-kpi-body">
+            <span>Delivered Orders</span>
+            <strong>{{ delivered_orders }}</strong>
+        </div>
+    </div>
+</div>
+
+<!-- ===== RECENT ORDERS + QUICK STATS ===== -->
+<div class="adm-two-col">
+    <div class="adm-card">
+        <div class="adm-card-head">
+            <h2>Recent Orders</h2>
+            <a href="{% url 'admin_orders' %}" class="adm-link-more">View all →</a>
+        </div>
+        <div class="adm-table-wrap">
+            <table class="adm-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Customer</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in recent_orders %}
+                    <tr>
+                        <td class="adm-td-id">#{{ order.id }}</td>
+                        <td>{% if order.owner %}{{ order.owner.name }}{% else %}<em>Deleted</em>{% endif %}</td>
+                        <td>{{ order.created_at|date:"d M Y" }}</td>
+                        <td>
+                            {% if order.order_status == 1 %}<span class="adm-badge adm-badge-blue">Confirmed</span>
+                            {% elif order.order_status == 2 %}<span class="adm-badge adm-badge-amber">Processing</span>
+                            {% elif order.order_status == 3 %}<span class="adm-badge adm-badge-green">Delivered</span>
+                            {% elif order.order_status == 4 %}<span class="adm-badge adm-badge-red">Rejected</span>
+                            {% else %}<span class="adm-badge adm-badge-gray">Cart</span>{% endif %}
+                        </td>
+                        <td><strong>₹{{ order.total_price|floatformat:2 }}</strong></td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="5" class="adm-empty-td">No confirmed orders yet.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="adm-card">
+        <div class="adm-card-head">
+            <h2>Top Products</h2>
+            <a href="{% url 'admin_products' %}" class="adm-link-more">View all →</a>
+        </div>
+        <ul class="adm-product-mini-list">
+            {% for product in top_products %}
+            <li class="adm-product-mini">
+                <img src="{{ product.image.url }}" alt="{{ product.title }}">
+                <div>
+                    <strong>{{ product.title|truncatechars:28 }}</strong>
+                    <span>{{ product.genter }} · ₹{{ product.price|floatformat:2 }}</span>
+                </div>
+                <a href="{% url 'admin_edit_product' product.id %}" class="adm-icon-btn" title="Edit">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4Z"/></svg>
+                </a>
+            </li>
+            {% empty %}
+            <li class="adm-empty-td">No products added yet.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<!-- ===== LATEST CUSTOMERS ===== -->
+<div class="adm-card" style="margin-top:22px;">
+    <div class="adm-card-head">
+        <h2>Latest Customers</h2>
+        <a href="{% url 'admin_customers' %}" class="adm-link-more">View all →</a>
+    </div>
+    <div class="adm-table-wrap">
+        <table class="adm-table">
+            <thead>
+                <tr><th>Name</th><th>Username</th><th>Phone</th><th>Address</th><th>Joined</th></tr>
+            </thead>
+            <tbody>
+                {% for c in recent_customers %}
+                <tr>
+                    <td>{{ c.name }}</td>
+                    <td>{{ c.user.username }}</td>
+                    <td>{{ c.phone }}</td>
+                    <td>{{ c.address|truncatechars:40 }}</td>
+                    <td>{{ c.created_at|date:"d M Y" }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5" class="adm-empty-td">No customers registered yet.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

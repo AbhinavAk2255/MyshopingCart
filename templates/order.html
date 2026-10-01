@@ -1,19 +1,79 @@
-{% extends 'blank-layout.html'%}
+{% extends 'base.html' %}
 {% load static %}
+{% load getstatus %}   {# orders/templatetags/getstatus.py -> {% getstatus status %} #}
 
-{% block banner %}
-            
-{% endblock banner %}
+{% block title %}My Orders — ShopKart{% endblock %}
 
 {% block content %}
-{% if messages %}
-<div class="order_message_container">
-    <img src="{% static 'images/gif-icon.gif' %}" alt="">
-    {% for message in messages %}
-    <h4 class="{{message.tags}}">{{message}}</h4>
+
+<!-- ============ Page head ============ -->
+<section class="page-head">
+    <div class="container">
+        <div>
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+                <a href="{% url 'home' %}">Home</a>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                <span>Orders</span>
+            </nav>
+            <h1>My Orders</h1>
+        </div>
+        <a class="btn btn-outline" href="{% url 'products_category' %}">
+            Continue Shopping
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+    </div>
+</section>
+
+<!-- ============ Orders list (context: orders) ============ -->
+<div class="container section">
+    {% for order in orders %}
+    {% getstatus order.order_status as status_label %}
+    <article class="order-card">
+        <div class="order-head">
+            <div>
+                <div class="o-id">Order #{{ order.id }}</div>
+                <div class="o-date">Placed on {{ order.created_at|date:"d M Y, h:i A" }}</div>
+            </div>
+            {# Status text + colour both come from getstatus: CONFIRMED / PROCESSED / DELIVERED / REJECTED #}
+            <span class="status st-{{ status_label|lower }}">{{ status_label }}</span>
+        </div>
+
+        <div class="order-body">
+            {% for item in order.order_items.all %}
+            <div class="order-item">
+                <span class="oi-thumb">
+                    {% if item.product %}
+                    <img src="{{ item.product.image.url }}" alt="{{ item.product.title }}">
+                    {% endif %}
+                </span>
+                <div>
+                    <b>{% if item.product %}{{ item.product.title }}{% else %}Product removed{% endif %}</b><br>
+                    <span>Qty: {{ item.quantity }}</span>
+                </div>
+                {% if item.product %}
+                <span class="oi-price">₹{{ item.product.price|floatformat:2 }}</span>
+                {% endif %}
+            </div>
+            {% empty %}
+            <p class="result-count">No items recorded for this order.</p>
+            {% endfor %}
+        </div>
+
+        <div class="order-foot">
+            <span>{{ order.order_items.count }} item{{ order.order_items.count|pluralize }} · incl. ₹35 shipping</span>
+            <span class="price">Total: ₹{{ order.total_price|floatformat:2 }}</span>
+        </div>
+    </article>
+    {% empty %}
+    <div class="empty-state">
+        <div class="empty-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+        </div>
+        <h2>No orders yet</h2>
+        <p>When you place an order, it will show up here with live status updates.</p>
+        <a class="btn btn-primary btn-lg" href="{% url 'products_category' %}">Start Shopping</a>
+    </div>
     {% endfor %}
 </div>
-{% else %}
-{% include 'order_container.html' %}
-{% endif %}
+
 {% endblock content %}

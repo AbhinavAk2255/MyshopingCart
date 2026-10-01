@@ -1,9 +1,79 @@
-{% extends 'blank-layout.html'%}
+{% extends 'base.html' %}
+{% load static %}
 
-{% block banner %}
-            
-{% endblock banner %}
+{% block title %}{{ detail.title }} — ShopKart{% endblock %}
 
 {% block content %}
-{% include 'singleproduct-detail.html' %}
+
+<!-- ============ Product detail (context: detail) ============ -->
+<section style="background:#fff; border-bottom:1px solid var(--line);">
+    <div class="container" style="padding-top:22px; padding-bottom:6px;">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="{% url 'home' %}">Home</a>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            <a href="{% url 'products_category' %}">Shop</a>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            <span>{{ detail.title }}</span>
+        </nav>
+    </div>
+    <div class="container detail-grid">
+
+        <div class="detail-media">
+            <img src="{{ detail.image.url }}" alt="{{ detail.title }}">
+        </div>
+
+        <div class="detail-info">
+            <span class="chip">{{ detail.genter }}</span>
+            <h1>{{ detail.title }}</h1>
+
+            <div class="detail-price">
+                <span class="price">₹{{ detail.price|floatformat:2 }}</span>
+                <span class="tax-note">Inclusive of all taxes</span>
+            </div>
+
+            <p class="detail-desc">{{ detail.description }}</p>
+
+            <div class="detail-divider"></div>
+
+            <!-- Add to cart → POSTs product_id & quantity to your add_to_cart view -->
+            <form method="post" action="{% url 'add_to_cart' %}">
+                {% csrf_token %}
+                <input type="hidden" name="product_id" value="{{ detail.id }}">
+                <div class="buy-row">
+                    <div class="qty-stepper">
+                        <button type="button" data-step="down" aria-label="Decrease quantity">−</button>
+                        <input type="number" name="quantity" value="1" min="1" aria-label="Quantity">
+                        <button type="button" data-step="up" aria-label="Increase quantity">+</button>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+                        Add to Cart
+                    </button>
+                </div>
+            </form>
+
+            <div class="detail-divider"></div>
+
+            <div class="meta-list">
+                <div class="meta-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 18H3c-.6 0-1-.4-1-1V7c0-.6.4-1 1-1h10c.6 0 1 .4 1 1v11"/><path d="M14 9h4l4 4v4c0 .6-.4 1-1 1h-2"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
+                    <div><b>Flat ₹35 shipping</b><span>Doorstep delivery</span></div>
+                </div>
+                <div class="meta-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                    <div><b>7-day returns</b><span>No questions asked</span></div>
+                </div>
+                <div class="meta-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+                    <div><b>Quality assured</b><span>Checked before dispatch</span></div>
+                </div>
+                <div class="meta-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.83z"/><path d="M7 7h.01"/></svg>
+                    <div><b>Best price</b><span>Honest, transparent pricing</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 {% endblock content %}

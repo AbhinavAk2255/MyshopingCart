@@ -1,0 +1,149 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ShopKart Admin{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect width='24' height='24' rx='6' fill='%234f46e5'/><path d='M5 12h14M12 5l7 7-7 7' fill='none' stroke='white' stroke-width='2' stroke-linecap='round'/></svg>">
+</head>
+<body>
+
+<div class="adm-shell">
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="adm-sidebar" id="admSidebar">
+        <div class="adm-sidebar-inner">
+
+            <!-- Brand -->
+            <a href="{% url 'admin_dashboard' %}" class="adm-brand">
+                <span class="adm-brand-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                </span>
+                <div>
+                    <strong>ShopKart</strong>
+                    <small>Admin Panel</small>
+                </div>
+            </a>
+
+            <!-- Admin user pill -->
+            <div class="adm-user-pill">
+                <span class="adm-user-avatar">{{ request.user.username|slice:":1"|upper }}</span>
+                <div>
+                    <b>{{ request.user.username }}</b>
+                    <small>{% if request.user.is_superuser %}Superuser{% else %}Staff{% endif %}</small>
+                </div>
+            </div>
+
+            <!-- Nav -->
+            <nav class="adm-nav">
+                <p class="adm-nav-label">Main</p>
+                <a href="{% url 'admin_dashboard' %}" class="adm-nav-link {% if request.resolver_match.url_name == 'admin_dashboard' %}active{% endif %}">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+                    Dashboard
+                </a>
+                <a href="{% url 'admin_products' %}" class="adm-nav-link {% if 'admin_product' in request.resolver_match.url_name %}active{% endif %}">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+                    Products
+                </a>
+                <a href="{% url 'admin_orders' %}" class="adm-nav-link {% if 'admin_order' in request.resolver_match.url_name %}active{% endif %}">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect width="8" height="4" x="8" y="2" rx="1"/><path d="M9 12h6"/><path d="M9 16h6"/></svg>
+                    Orders
+                </a>
+                <a href="{% url 'admin_customers' %}" class="adm-nav-link {% if 'admin_customer' in request.resolver_match.url_name %}active{% endif %}">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    Customers
+                </a>
+
+                <p class="adm-nav-label">Store</p>
+                <a href="{% url 'home' %}" target="_blank" class="adm-nav-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    View Storefront
+                </a>
+                <a href="{% url 'admin_add_product' %}" class="adm-nav-link {% if request.resolver_match.url_name == 'admin_add_product' %}active{% endif %}">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
+                    Add Product
+                </a>
+                <a href="{% url 'logout' %}" class="adm-nav-link adm-nav-danger">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+                    Logout
+                </a>
+            </nav>
+        </div>
+    </aside>
+
+    <!-- ===== MAIN ===== -->
+    <div class="adm-main">
+
+        <!-- Top bar -->
+        <header class="adm-topbar">
+            <button class="adm-hamburger" id="admToggle" aria-label="Toggle sidebar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg>
+            </button>
+            <div class="adm-breadcrumb">
+                <a href="{% url 'admin_dashboard' %}">Admin</a>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                <span>{% block breadcrumb %}Dashboard{% endblock %}</span>
+            </div>
+            <div class="adm-topbar-right">
+                <a href="{% url 'home' %}" class="adm-topbar-btn" target="_blank">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+                    View Store
+                </a>
+            </div>
+        </header>
+
+        <!-- Django messages -->
+        {% if messages %}
+        <div class="adm-toast-stack">
+            {% for message in messages %}
+            <div class="adm-toast adm-toast-{{ message.tags }}">
+                {% if message.tags == 'success' %}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                {% else %}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+                {% endif %}
+                <span>{{ message }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Page content -->
+        <main class="adm-page">
+            {% block content %}{% endblock %}
+        </main>
+
+    </div>
+</div>
+
+<!-- Sidebar overlay for mobile -->
+<div class="adm-overlay" id="admOverlay"></div>
+
+<script>
+(function(){
+    var sidebar  = document.getElementById('admSidebar');
+    var toggle   = document.getElementById('admToggle');
+    var overlay  = document.getElementById('admOverlay');
+    function openSidebar(){  sidebar.classList.add('open');  overlay.classList.add('show'); }
+    function closeSidebar(){ sidebar.classList.remove('open'); overlay.classList.remove('show'); }
+    if(toggle)  toggle.addEventListener('click', function(){ sidebar.classList.contains('open') ? closeSidebar() : openSidebar(); });
+    if(overlay) overlay.addEventListener('click', closeSidebar);
+    // auto-dismiss toasts
+    setTimeout(function(){
+        document.querySelectorAll('.adm-toast').forEach(function(el){ el.style.opacity='0'; el.style.transform='translateX(40px)'; });
+    }, 4000);
+    // confirm deletes
+    document.querySelectorAll('[data-confirm]').forEach(function(el){
+        el.addEventListener('click', function(e){
+            if(!confirm(el.dataset.confirm)){ e.preventDefault(); }
+        });
+    });
+})();
+</script>
+</body>
+</html>

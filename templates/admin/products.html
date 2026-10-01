@@ -1,0 +1,86 @@
+{% extends 'admin/admin_base.html' %}
+{% load static %}
+
+{% block title %}Products — ShopKart Admin{% endblock %}
+{% block breadcrumb %}Products{% endblock %}
+
+{% block content %}
+<div class="adm-page-head">
+    <div>
+        <h1>Products</h1>
+        <p>{{ products.paginator.count }} products in the catalog.</p>
+    </div>
+    <a href="{% url 'admin_add_product' %}" class="adm-btn adm-btn-primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
+        Add Product
+    </a>
+</div>
+
+<!-- Filter pills -->
+<div class="adm-filter-bar">
+    <a href="{% url 'admin_products' %}" class="adm-pill {% if not request.GET.cat %}adm-pill-active{% endif %}">All</a>
+    <a href="?cat=men"   class="adm-pill {% if request.GET.cat == 'men' %}adm-pill-active{% endif %}">Men</a>
+    <a href="?cat=women" class="adm-pill {% if request.GET.cat == 'women' %}adm-pill-active{% endif %}">Women</a>
+    <a href="?cat=kids"  class="adm-pill {% if request.GET.cat == 'kids' %}adm-pill-active{% endif %}">Kids</a>
+</div>
+
+<div class="adm-card">
+    <div class="adm-table-wrap">
+        <table class="adm-table">
+            <thead>
+                <tr>
+                    <th style="width:70px;">Image</th>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th style="width:120px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in products %}
+                <tr>
+                    <td>
+                        <div class="adm-thumb">
+                            <img src="{{ p.image.url }}" alt="{{ p.title }}">
+                        </div>
+                    </td>
+                    <td><strong>{{ p.title }}</strong></td>
+                    <td><span class="adm-badge adm-badge-gray">{{ p.genter }}</span></td>
+                    <td><strong>₹{{ p.price|floatformat:2 }}</strong></td>
+                    <td>{{ p.priority }}</td>
+                    <td>
+                        {% if p.delete_status == 1 %}
+                            <span class="adm-badge adm-badge-green">Live</span>
+                        {% else %}
+                            <span class="adm-badge adm-badge-red">Deleted</span>
+                        {% endif %}
+                    </td>
+                    <td class="adm-actions">
+                        <a href="{% url 'admin_edit_product' p.id %}" class="adm-icon-btn adm-icon-btn-blue" title="Edit">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4Z"/></svg>
+                        </a>
+                        <a href="{% url 'admin_delete_product' p.id %}" class="adm-icon-btn adm-icon-btn-red" title="Delete" data-confirm="Are you sure you want to delete '{{ p.title }}'?">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="7" class="adm-empty-td">No products found. <a href="{% url 'admin_add_product' %}">Add the first one →</a></td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% if products.has_other_pages %}
+    <div class="adm-pagination">
+        {% if products.has_previous %}<a href="?page={{ products.previous_page_number }}{% if request.GET.cat %}&cat={{ request.GET.cat }}{% endif %}">← Prev</a>{% endif %}
+        {% for num in products.paginator.page_range %}
+            {% if products.number == num %}<span class="adm-pg-current">{{ num }}</span>
+            {% else %}<a href="?page={{ num }}{% if request.GET.cat %}&cat={{ request.GET.cat }}{% endif %}">{{ num }}</a>{% endif %}
+        {% endfor %}
+        {% if products.has_next %}<a href="?page={{ products.next_page_number }}{% if request.GET.cat %}&cat={{ request.GET.cat }}{% endif %}">Next →</a>{% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

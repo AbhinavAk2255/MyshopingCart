@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
+@login_required(login_url='account')
 def show_cart(request):
     user = request.user
     customer = user.customer_profile
@@ -33,6 +34,37 @@ def view_orders(request):
 
     return render(request,'order.html',context)
 
+@login_required(login_url='account')
+def payment_page(request):
+    """
+    dummy payment page.
+    
+    """
+    user = request.user
+    customer = user.customer_profile
+    amount = 0
+
+    cart_obj, created = Order.objects.get_or_create(
+        owner=customer,
+        order_status=Order.CART_STAGE
+    )
+    cart_items = OrderedItem.objects.filter(owner=cart_obj)
+
+    for item in cart_items:
+        amount += item.product.price * item.quantity
+
+    total = amount + 35
+
+    # If the cart is empty, redirect back to the cart page
+    if not cart_items.exists():
+        return redirect('cart')
+
+    context = {
+        'cart': cart_obj,
+        'amount': amount,
+        'total': total,
+    }
+    return render(request, 'payment.html', context)
 
 def checkout_cart(request):
     if request.POST:

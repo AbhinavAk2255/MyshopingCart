@@ -1,0 +1,94 @@
+{% extends 'admin/admin_base.html' %}
+{% load static %}
+
+{% block title %}Orders — ShopKart Admin{% endblock %}
+{% block breadcrumb %}Orders{% endblock %}
+
+{% block content %}
+<div class="adm-page-head">
+    <div>
+        <h1>Orders</h1>
+        <p>{{ orders.paginator.count }} total orders (excluding items still in cart).</p>
+    </div>
+</div>
+
+<!-- Status filter pills -->
+<div class="adm-filter-bar">
+    <a href="{% url 'admin_orders' %}"  class="adm-pill {% if not request.GET.status %}adm-pill-active{% endif %}">All</a>
+    <a href="?status=1" class="adm-pill {% if request.GET.status == '1' %}adm-pill-active{% endif %}">Confirmed</a>
+    <a href="?status=2" class="adm-pill {% if request.GET.status == '2' %}adm-pill-active{% endif %}">Processing</a>
+    <a href="?status=3" class="adm-pill {% if request.GET.status == '3' %}adm-pill-active{% endif %}">Delivered</a>
+    <a href="?status=4" class="adm-pill {% if request.GET.status == '4' %}adm-pill-active{% endif %}">Rejected</a>
+</div>
+
+<div class="adm-card">
+    <div class="adm-table-wrap">
+        <table class="adm-table">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Customer</th>
+                    <th>Items</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Total</th>
+                    <th>Update Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td class="adm-td-id">#{{ order.id }}</td>
+                    <td>
+                        <strong>{% if order.owner %}{{ order.owner.name }}{% else %}Deleted User{% endif %}</strong><br>
+                        <small style="color:#64748b;">{% if order.owner %}{{ order.owner.user.username }}{% endif %}</small>
+                    </td>
+                    <td>
+                        {% for item in order.order_items.all %}
+                        <div class="adm-order-item-mini">
+                            <span>{{ item.product.title|truncatechars:22 }} × {{ item.quantity }}</span>
+                        </div>
+                        {% endfor %}
+                    </td>
+                    <td>{{ order.created_at|date:"d M Y, H:i" }}</td>
+                    <td>
+                        {% if order.order_status == 1 %}<span class="adm-badge adm-badge-blue">Confirmed</span>
+                        {% elif order.order_status == 2 %}<span class="adm-badge adm-badge-amber">Processing</span>
+                        {% elif order.order_status == 3 %}<span class="adm-badge adm-badge-green">Delivered</span>
+                        {% elif order.order_status == 4 %}<span class="adm-badge adm-badge-red">Rejected</span>
+                        {% else %}<span class="adm-badge adm-badge-gray">Cart</span>{% endif %}
+                    </td>
+                    <td><strong>₹{{ order.total_price|floatformat:2 }}</strong></td>
+                    <td>
+                        <form method="post" action="{% url 'admin_update_order' order.id %}">
+                            {% csrf_token %}
+                            <div class="adm-inline-update">
+                                <select name="status" class="adm-select-sm">
+                                    <option value="1" {% if order.order_status == 1 %}selected{% endif %}>Confirmed</option>
+                                    <option value="2" {% if order.order_status == 2 %}selected{% endif %}>Processing</option>
+                                    <option value="3" {% if order.order_status == 3 %}selected{% endif %}>Delivered</option>
+                                    <option value="4" {% if order.order_status == 4 %}selected{% endif %}>Rejected</option>
+                                </select>
+                                <button type="submit" class="adm-btn adm-btn-sm adm-btn-primary">Update</button>
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="7" class="adm-empty-td">No orders found for the selected filter.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% if orders.has_other_pages %}
+    <div class="adm-pagination">
+        {% if orders.has_previous %}<a href="?page={{ orders.previous_page_number }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">← Prev</a>{% endif %}
+        {% for num in orders.paginator.page_range %}
+            {% if orders.number == num %}<span class="adm-pg-current">{{ num }}</span>
+            {% else %}<a href="?page={{ num }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">{{ num }}</a>{% endif %}
+        {% endfor %}
+        {% if orders.has_next %}<a href="?page={{ orders.next_page_number }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">Next →</a>{% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
