@@ -49,19 +49,25 @@
 
             <nav class="header-actions" aria-label="Account">
                 {% if user.is_authenticated %}
+                    {% if not user.is_staff %}
                     <a class="h-action" href="{% url 'orders' %}">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
                         <span>Orders</span>
                     </a>
+                    {% endif %}
                     {% if user.is_staff %}
                     <a class="h-action" href="{% url 'admin_dashboard' %}">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
                         <span>Admin</span>
                     </a>
                     {% endif %}
-                    <a class="h-action" href="{% url 'logout' %}">
+                    <a class="h-action" href="">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                         <span>{{ user.username|truncatechars:9 }}</span>
+                    </a>
+                    <a class="h-action" href="{% url 'logout' %}">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        <span>Logout</span>
                     </a>
                 {% else %}
                     <a class="h-action" href="{% url 'account' %}">
@@ -69,10 +75,12 @@
                         <span>Sign In</span>
                     </a>
                 {% endif %}
+                {% if not user.is_staff %}
                 <a class="h-action" href="{% url 'cart' %}" aria-label="Cart">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
                     <span>Cart</span>
                 </a>
+                {% endif %}
                 <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg>
                 </button>
